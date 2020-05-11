@@ -7,7 +7,8 @@ import axios from 'axios'
 
 class App extends Component {
   state={
-     recipes:[]
+     recipes:[],
+     alert:false
   }
   componentDidMount(){
      
@@ -40,11 +41,26 @@ class App extends Component {
         console.log(error)
       })
   }
+  clearUser = () => {
+    this.setState({
+      recipes:[]
+    })
+  }
+  alertMessage =  () => {
+      this.setState({
+        alert:true
+      })
+      setTimeout(() => {
+        this.setState({
+          alert:false
+        })
+      }, 3000);
+  }
   render(){
     const {recipes}  = this.state
     return (
       <React.Fragment>
-            <RecipeSearch searchUser={this.searchUser}/>
+            <RecipeSearch alert={this.state.alert} searchUser={this.searchUser} recipes={recipes} clearUser={this.clearUser} alertMessage={this.alertMessage} />
             <RecipeList recipes={recipes} />
       </React.Fragment>
     );
