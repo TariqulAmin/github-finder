@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import './App.css';
 import RecipeList  from './Component/RecipeList'
 import RecipeSearch  from './Component/RecipeSearch'
+import RecipeDetail  from './Component/RecipeDetail'
 import {recipes} from './tempList' 
 import axios from 'axios'
+import {BrowserRouter, Route , Switch} from 'react-router-dom'
 
 class App extends Component {
   state={
@@ -59,10 +61,19 @@ class App extends Component {
   render(){
     const {recipes}  = this.state
     return (
+    <BrowserRouter> 
       <React.Fragment>
-            <RecipeSearch alert={this.state.alert} searchUser={this.searchUser} recipes={recipes} clearUser={this.clearUser} alertMessage={this.alertMessage} />
-            <RecipeList recipes={recipes} />
+            <Switch>
+              <Route exact path="/" render={props => (
+                <React.Fragment>
+                    <RecipeSearch alert={this.state.alert} searchUser={this.searchUser} recipes={recipes} clearUser={this.clearUser} alertMessage={this.alertMessage} />
+                    <RecipeList recipes={recipes} />
+                </React.Fragment>
+              )} />
+              <Route path="/details/:login" component={RecipeDetail} />
+            </Switch>            
       </React.Fragment>
+    </BrowserRouter>   
     );
   }
   
