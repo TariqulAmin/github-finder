@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import RepoList from './RepoList'
 
 class RecipeDetail extends Component {
     state={
-        recipe:{}
+        recipe:{},
+        repos:[]
     }
     componentDidMount(){
      
@@ -12,9 +14,21 @@ class RecipeDetail extends Component {
         {process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=$
         {process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
          .then(res=>{
-           console.log(res.data)
-           this.setState({
+            this.setState({
              recipe:res.data
+           })
+         })
+         .catch(error=>{
+           console.log(error)
+   
+         })
+
+        axios.get(`https://api.github.com/users/${this.props.match.params.login}/repos?client_id=$
+        {process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=$
+        {process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+         .then(res=>{
+            this.setState({
+             repos:res.data
            })
          })
          .catch(error=>{
@@ -44,12 +58,12 @@ class RecipeDetail extends Component {
                                 <a href={this.state.recipe.html_url} className="btn btn-dark">Github Profile</a><br/><br/>
                                 <p>Username:{this.state.recipe.login}</p>
                                 <p>Company:{this.state.recipe.company}</p>
-                                <p>Website:{this.state.recipe.website}</p>
+                                <p>Website:{this.state.recipe.blog}</p>
                             </div>
                         </div>
-                           
-                        
                         </div> 
+
+                        <RepoList repos={this.state.repos}/>
                     </div>
 
                 </div>
